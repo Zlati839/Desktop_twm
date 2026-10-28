@@ -1,0 +1,94 @@
+[gd_scene load_steps=13 format=3 uid="uid://e33ih2rm0m3h"]
+
+[ext_resource type="Script" uid="uid://5m3nwsc405bc" path="res://Main.gd" id="1_q6r6c"]
+[ext_resource type="Texture2D" uid="uid://dku5qo80mssvp" path="res://Twm_normal_screen1.png" id="2_0hol4"]
+[ext_resource type="Texture2D" uid="uid://cd5ook337g3r4" path="res://Twm_blink1.png" id="2_hqns4"]
+[ext_resource type="Texture2D" uid="uid://vgpeqqs7laar" path="res://Twm_normal_screen.png" id="3_q6r6c"]
+[ext_resource type="Texture2D" uid="uid://du7tesgig1qam" path="res://Twm_blink2.png" id="3_x0ka3"]
+[ext_resource type="Texture2D" uid="uid://ctj2s6apablbg" path="res://Twm_blink3.png" id="4_0h7mo"]
+[ext_resource type="Texture2D" uid="uid://cux4tskqksoxg" path="res://Twm_blink4.png" id="5_nr8wp"]
+[ext_resource type="Texture2D" uid="uid://bv3hawapcwn3l" path="res://Twm_blink5.png" id="6_d2bti"]
+[ext_resource type="Script" uid="uid://bwbx7i06lgrf0" path="res://animated_sprite_2d.gd" id="6_kdubu"]
+[ext_resource type="Texture2D" uid="uid://bgjavwotq4ahk" path="res://Twm_blink6.png" id="7_ta5nu"]
+[ext_resource type="Texture2D" uid="uid://dqhrntbsup5wn" path="res://Twm_blink7.png" id="8_flf07"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y32ns"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_hqns4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_x0ka3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_0h7mo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_nr8wp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_d2bti")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ta5nu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_flf07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_hqns4")
+}],
+"loop": false,
+"name": &"Blink",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_0hol4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_q6r6c")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D"]
+position = Vector2(575, 322)
+script = ExtResource("1_q6r6c")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-480, -239)
+rotation = -0.00367577
+scale = Vector2(0.316616, 0.332039)
+sprite_frames = SubResource("SpriteFrames_y32ns")
+animation = &"Blink"
+script = ExtResource("6_kdubu")
+metadata/_aseprite_wizard_interface_config_ = {
+"animation_section": true,
+"layer_section": false,
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"embed_tex": true,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"scale": "1.0",
+"should_round_fps": true,
+"slice": "",
+"source": "res://Sprite-0003.aseprite",
+"source_uid": 6631150677439919308
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="AnimatedSprite2D"]
+position = Vector2(-1.38098, -1.71805)
+scale = Vector2(0.99493, 0.993063)
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(280.836, -26.6957, 279.949, -73.8261, 277.376, -119.217, 269.48, -198.87, 220.503, -244.261, 191.668, -245.13, 141.006, -245.13, 75.4383, -246.783, 29.1239, -246.783, -27.66, -247.652, -80.9836, -243.391, -143.002, -242.522, -191.091, -242.522, -223.387, -233.913, -243.528, -214.261, -268.016, -189.391, -272.363, -139.391, -272.363, -80.6956, -269.435, -33.913, -269.435, -1.3913, -271.653, 47.4783, -268.725, 160, -253.553, 217.304, -200.851, 223.043, -127.209, 228.696, -49.9299, 235.043, 15.2829, 233.13, 131.867, 235.304, 208.792, 230.435, 254.84, 221.652, 269.125, 206.522, 278.618, 174.087, 278.263, 125.739, 279.949, 88.9565, 280.836, 58.9565, 279.062, 23.8261)
