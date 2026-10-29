@@ -8,6 +8,7 @@ var rng = RandomNumberGenerator.new()
 var random_time = rng.randf_range(10, 40)
 var D = preload("res://SpeachWindow.tscn")
 var speach: Window = D.instantiate()
+var speak = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#======================2ND WINDOW============
@@ -64,14 +65,15 @@ func _process(delta: float) -> void:
 	get_window().mouse_passthrough_polygon = world_space
 	
 	if dragging:
-		print("draging")
+		pass
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if Geometry2D.is_point_in_polygon(get_window().get_mouse_position(), calculated_polygon):
-			DisplayServer.window_start_drag()
 			dragging = true
-	else :
-		dragging = false
+			speak = true
+			DisplayServer.window_start_drag()
+	else:
+			dragging = false
 func blink() -> void:
 	Buddy.play("Blink")
