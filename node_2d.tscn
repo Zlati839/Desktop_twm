@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://e33ih2rm0m3h"]
+[gd_scene load_steps=30 format=3 uid="uid://e33ih2rm0m3h"]
 
 [ext_resource type="Script" uid="uid://5m3nwsc405bc" path="res://Main.gd" id="1_q6r6c"]
 [ext_resource type="Texture2D" uid="uid://dku5qo80mssvp" path="res://Twm_normal_screen1.png" id="2_0hol4"]
@@ -11,6 +11,23 @@
 [ext_resource type="Script" uid="uid://bwbx7i06lgrf0" path="res://animated_sprite_2d.gd" id="6_kdubu"]
 [ext_resource type="Texture2D" uid="uid://bgjavwotq4ahk" path="res://Twm_blink6.png" id="7_ta5nu"]
 [ext_resource type="Texture2D" uid="uid://dqhrntbsup5wn" path="res://Twm_blink7.png" id="8_flf07"]
+[ext_resource type="Texture2D" uid="uid://d1d85my0fd8ca" path="res://Twm_talking_screen1.png" id="9_0h7mo"]
+[ext_resource type="Texture2D" uid="uid://bqynfcmdsq7ef" path="res://Twm_dizzy_screen1.png" id="9_2hxjc"]
+[ext_resource type="Texture2D" uid="uid://bte0lglqmvvvn" path="res://Twm_dizzy_screen2.png" id="10_ebxd8"]
+[ext_resource type="Texture2D" uid="uid://cm14r0tcw2apt" path="res://Twm_talking_screen2.png" id="10_nr8wp"]
+[ext_resource type="Texture2D" uid="uid://cc0thjq74whhs" path="res://Twm_dizzy_screen3.png" id="11_2u7jv"]
+[ext_resource type="Texture2D" uid="uid://x2eof0auumk7" path="res://Twm_dizzy_screen4.png" id="12_24dk6"]
+[ext_resource type="Texture2D" uid="uid://cmrrdbtgow2td" path="res://Twm_dizzy_screen5.png" id="13_mryly"]
+[ext_resource type="Texture2D" uid="uid://btltr457bbrns" path="res://Twm_dizzy_screen6.png" id="14_kq1c5"]
+[ext_resource type="Texture2D" uid="uid://b2t4xdpkg6o41" path="res://Twm_dizzy_screen7.png" id="15_ornx7"]
+[ext_resource type="Texture2D" uid="uid://birgiqntnkntg" path="res://Twm_dizzy_screen8.png" id="16_cnnru"]
+[ext_resource type="Texture2D" uid="uid://qn8ne1q2n6g8" path="res://Twm_dizzy_screen9.png" id="17_540hr"]
+[ext_resource type="Texture2D" uid="uid://bp72vjsfwvyaa" path="res://Twm_dizzy_screen10.png" id="18_6ip5v"]
+[ext_resource type="Texture2D" uid="uid://cc7humej76umt" path="res://Twm_dizzy_screen11.png" id="19_q5dlx"]
+[ext_resource type="Texture2D" uid="uid://cdop8lty7ijbn" path="res://Twm_dizzy_screen12.png" id="20_c4wnb"]
+[ext_resource type="Texture2D" uid="uid://dqxjrg47534aa" path="res://Twm_dizzy_screen13.png" id="21_7plk7"]
+[ext_resource type="Texture2D" uid="uid://4f4lqovasqpx" path="res://Twm_dizzy_screen14.png" id="22_fbwgr"]
+[ext_resource type="Texture2D" uid="uid://0ubh0e6qf464" path="res://Twm_dizzy_screen15.png" id="23_7mj2a"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_y32ns"]
 animations = [{
@@ -45,6 +62,67 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("9_2hxjc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_ebxd8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_2u7jv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_24dk6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_mryly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_kq1c5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ornx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_cnnru")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_540hr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_6ip5v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_q5dlx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_c4wnb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_7plk7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_fbwgr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_7mj2a")
+}],
+"loop": true,
+"name": &"Dizzy_animation",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_0h7mo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_nr8wp")
+}],
+"loop": true,
+"name": &"Talking_animation",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("2_0hol4")
 }, {
 "duration": 1.0,
@@ -66,7 +144,8 @@ position = Vector2(-480, -239)
 rotation = -0.00367577
 scale = Vector2(0.316616, 0.332039)
 sprite_frames = SubResource("SpriteFrames_y32ns")
-animation = &"Blink"
+animation = &"Dizzy_animation"
+frame_progress = 0.630433
 script = ExtResource("6_kdubu")
 metadata/_aseprite_wizard_interface_config_ = {
 "animation_section": true,

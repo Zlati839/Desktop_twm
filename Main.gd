@@ -5,12 +5,21 @@ var drag_offset = Vector2.ZERO
 var calculated_polygon: PackedVector2Array = PackedVector2Array()
 var dragging = false
 var rng = RandomNumberGenerator.new()
-var random_time = rng.randf_range(10, 40)
+var random_time = rng.randf_range(25, 50)
 var D = preload("res://SpeachWindow.tscn")
 var speach: Window = D.instantiate()
 var speak = false
+var lock = true
+var direction = 0
+var previuos = 0
+var previuos_direction = 0
+var shaken_times = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
+	previuos = get_window().position.x
+	speach.main = self
+	Buddy.play("new_animation")
 	#======================2ND WINDOW============
 	speach.visible = false
 	speach.transparent = true
@@ -47,12 +56,19 @@ func teleport() -> void:
 		var random_x = rng.randf_range(0, safe_max_x)
 		var random_y = rng.randf_range(0, safe_max_y)
 		get_window().position = Vector2i(random_x, random_y)
-		random_time = rng.randf_range(10, 40)
+		random_time = rng.randf_range(25, 50)
 		if rng.randf() < 0.3:
 			speach.Teleport_Voice()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+var i = 0
 func _process(delta: float) -> void:
+	detect_shake()
+	if dragging and not speak and lock:
+		lock = false
+		var Chance_Drag = rng.randi_range(0,3)
+		if Chance_Drag == 2:
+			speach.Drag_Voice()
 	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
 	speach.position.x = int(buddy_screen.x - speach.size.x / 2 - 50)
 	speach.position.y = int(buddy_screen.y)
@@ -63,17 +79,47 @@ func _process(delta: float) -> void:
 		world_space.append(stuffmore)
 	calculated_polygon = world_space
 	get_window().mouse_passthrough_polygon = world_space
-	
-	if dragging:
-		pass
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if Geometry2D.is_point_in_polygon(get_window().get_mouse_position(), calculated_polygon):
 			dragging = true
-			speak = true
+			speak = false
 			DisplayServer.window_start_drag()
 	else:
 			dragging = false
+			lock = true
+	if event is InputEventKey and event.keycode == KEY_E and event.pressed:
+		speach.Drag_Voice()
 func blink() -> void:
-	Buddy.play("Blink")
+	if not speach.dizzy :
+		Buddy.play("Blink")
+	
+func Speak() -> void:
+	Buddy.play("Talking_animation")
+	
+func Normal() ->void:
+	Buddy.play("new_animation")
+
+func detect_shake() -> void :
+	var current = get_window().position.x
+	var movement = current - previuos 
+	if dragging :
+		direction = sign(movement)
+		if direction != 0:
+			if previuos_direction != 0 and direction != previuos_direction:
+				shaken_times += 1
+		if direction == -1:
+			previuos_direction = -1
+			previuos = get_window().position.x
+		elif direction == 1:
+			previuos_direction = 1
+			previuos = get_window().position.x 
+	if shaken_times > 17 :
+		speach.dizzy = true
+		Buddy.play("Dizzy_animation")
+		speach.Shake_Voice()
+		shaken_times = 0
+		previuos_direction = 0
+		previuos = get_window().position.x
+		
