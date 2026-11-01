@@ -7,33 +7,55 @@ var dragging = false
 var rng = RandomNumberGenerator.new()
 var random_time = rng.randf_range(25, 50)
 var D = preload("res://SpeachWindow.tscn")
+var P = preload("res://PopUp.tscn")
 var speach: Window = D.instantiate()
+var PopUp: Window = P.instantiate()
 var speak = false
 var lock = true
 var direction = 0
 var previuos = 0
 var previuos_direction = 0
 var shaken_times = 0
+var starting = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	#===================SETTINGS======================
+	get_viewport().transparent_bg = true
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_TRANSPARENT, true)
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_ALWAYS_ON_TOP, true)
+	#======================Start anim======================
+	starting = true
+	Buddy.stop()
+	Buddy.frame = 0 
+	Buddy.play("Start_animation")
+	await get_tree().create_timer(1.5).timeout
+	starting = false
 	
 	previuos = get_window().position.x
 	speach.main = self
-	Buddy.play("new_animation")
 	#======================2ND WINDOW============
+	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
 	speach.visible = false
 	speach.transparent = true
 	speach.transparent_bg = true
 	speach.borderless = true
 	speach.always_on_top = true
 	speach.size = Vector2i(800, 200)
-	speach.position = Vector2i(200, 200)
-	add_child(speach)
-	speach.visible = true
-	#===================SETTINGS======================
-	get_viewport().transparent_bg = true
-	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_TRANSPARENT, true)
-	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_ALWAYS_ON_TOP, true)
+	speach.position.x = int(buddy_screen.x - speach.size.x / 2 - 50)
+	speach.position.y = int(buddy_screen.y)
+	if not starting:
+		add_child(speach)
+		speach.visible = true
+	#=====================3RD WINDOW==================
+	#For later use rn work on more desktop voiclines 
+	PopUp.visible = false
+	PopUp.transparent = true
+	PopUp.transparent_bg = true
+	PopUp.borderless = true
+	PopUp.always_on_top = true
+	PopUp.size = Vector2i(270, 440)
+	PopUp.position = Vector2i(200, 200)
+	add_child(PopUp)
 	#=======================TIMERS=========================
 	var my_timer = Timer.new()
 	var blink_timer = Timer.new()
@@ -72,6 +94,8 @@ func _process(delta: float) -> void:
 	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
 	speach.position.x = int(buddy_screen.x - speach.size.x / 2 - 50)
 	speach.position.y = int(buddy_screen.y)
+	PopUp.position.x = int(buddy_screen.x - speach.size.x / 1.7 )
+	PopUp.position.y = int(buddy_screen.y - speach.size.y * 2.2)
 	var world_space = PackedVector2Array()
 	var stuff = Buddy_Boddy.get_global_transform_with_canvas()
 	for p in Buddy_Boddy.polygon:
@@ -94,11 +118,9 @@ func _input(event: InputEvent) -> void:
 func blink() -> void:
 	if not speach.dizzy :
 		Buddy.play("Blink")
-	
 func Speak() -> void:
 	Buddy.play("Talking_animation")
-	
-func Normal() ->void:
+func Normal() -> void:
 	Buddy.play("new_animation")
 
 func detect_shake() -> void :

@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://e33ih2rm0m3h"]
+[gd_scene load_steps=41 format=3 uid="uid://e33ih2rm0m3h"]
 
 [ext_resource type="Script" uid="uid://5m3nwsc405bc" path="res://Main.gd" id="1_q6r6c"]
 [ext_resource type="Texture2D" uid="uid://dku5qo80mssvp" path="res://Twm_normal_screen1.png" id="2_0hol4"]
@@ -28,6 +28,17 @@
 [ext_resource type="Texture2D" uid="uid://dqxjrg47534aa" path="res://Twm_dizzy_screen13.png" id="21_7plk7"]
 [ext_resource type="Texture2D" uid="uid://4f4lqovasqpx" path="res://Twm_dizzy_screen14.png" id="22_fbwgr"]
 [ext_resource type="Texture2D" uid="uid://0ubh0e6qf464" path="res://Twm_dizzy_screen15.png" id="23_7mj2a"]
+[ext_resource type="Texture2D" uid="uid://cf2y3bi5aeo7i" path="res://Twm_start1.png" id="24_c4wnb"]
+[ext_resource type="Texture2D" uid="uid://bhk0ajbohtc2d" path="res://Twm_start2.png" id="25_7plk7"]
+[ext_resource type="Texture2D" uid="uid://wve7p7gwbl77" path="res://Twm_start3.png" id="26_fbwgr"]
+[ext_resource type="Texture2D" uid="uid://t3ci6c4ljrvn" path="res://Twm_start4.png" id="27_7mj2a"]
+[ext_resource type="Texture2D" uid="uid://b2elrmtflk4mp" path="res://Twm_start5.png" id="28_fshgd"]
+[ext_resource type="Texture2D" uid="uid://cx1xq7bgoljee" path="res://Twm_start6.png" id="29_lbrxf"]
+[ext_resource type="Texture2D" uid="uid://b24r8iq7c4bce" path="res://Twm_start7.png" id="30_xjt7e"]
+[ext_resource type="Texture2D" uid="uid://doe8wbtiasoor" path="res://Twm_start8.png" id="31_0xo8l"]
+[ext_resource type="Texture2D" uid="uid://b70w2kallohsr" path="res://Twm_start9.png" id="32_xfyss"]
+[ext_resource type="Texture2D" uid="uid://buv3tqy7cd6p0" path="res://Twm_start10.png" id="33_3ngjr"]
+[ext_resource type="Texture2D" uid="uid://cd0wkt5s2reeh" path="res://Twm_start11.png" id="34_qilgh"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_y32ns"]
 animations = [{
@@ -112,6 +123,44 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("24_c4wnb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_7plk7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_fbwgr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_7mj2a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_fshgd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_lbrxf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_xjt7e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_0xo8l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_xfyss")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_3ngjr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_qilgh")
+}],
+"loop": false,
+"name": &"Start_animation",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("9_0h7mo")
 }, {
 "duration": 1.0,
@@ -144,8 +193,9 @@ position = Vector2(-480, -239)
 rotation = -0.00367577
 scale = Vector2(0.316616, 0.332039)
 sprite_frames = SubResource("SpriteFrames_y32ns")
-animation = &"Dizzy_animation"
-frame_progress = 0.630433
+animation = &"Start_animation"
+frame = 3
+frame_progress = 0.692393
 script = ExtResource("6_kdubu")
 metadata/_aseprite_wizard_interface_config_ = {
 "animation_section": true,

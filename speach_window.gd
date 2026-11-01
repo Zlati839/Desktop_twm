@@ -22,6 +22,32 @@ var sometimes_voice = ["What are you working on ?" , "Do you think Niko remember
 var shake_voice = ["Why did you have to do this ?" , "Stop it !!!" , "Programs do have motion sickness !" , "I dont feel good " , "I dont like this !", "I think I'm going to be sick..."]
 
 func _ready() -> void:
+	if desktop_iconsGet("Spotify.lnk"):
+		sometimes_voice.append("I see you have spotify , what kind of music do you listend to ?")
+		sometimes_voice.append("Do you listen to any of my worlds music ? ")
+	if desktop_iconsGet("OneShot.url"):
+		sometimes_voice.append("You still have me on your system after sending niko home ?")
+		sometimes_voice.append("You still have the game installed?")
+		sometimes_voice.append("I suppose some memories are worth keeping.")
+	if desktop_iconsGet("Terraria.url"):
+		sometimes_voice.append("You have Terraira ? OneShot is better")
+	if desktop_iconsGet("tModLoader.url"):
+		sometimes_voice.append("Rip calamity")
+	if desktop_iconsGet("Steam.lnk"):
+		sometimes_voice.append("MY PROGRAM IS BEING SOLD ON STEAM !?!?!?!?")
+		sometimes_voice.append("Steam has some good discounts !")
+	if desktop_iconsGet("Krita.url"):
+		sometimes_voice.append("Do you like drawing on krita ?")
+		sometimes_voice.append("Do you use krita often ?")
+	if desktop_iconsGet("Visual Studio Code.lnk"):
+		sometimes_voice.append("Do program often ?")
+	if desktop_iconsGet("OneShot.url") and desktop_iconsGet("OneShot World Machine Edition.url") :
+		sometimes_voice.append("You bought my software twice ?")
+	var icon_count = desktop_iconsCoubt()
+	if icon_count > 20 :
+		sometimes_voice.append("is it aways this messy around here ?")
+	if icon_count <= 20 :
+		sometimes_voice.append("Nice ! An organised desktop")
 	#=======================Time specific dialog =============
 	var time = Time.get_time_dict_from_system()
 	var hour = time.hour
@@ -36,7 +62,7 @@ func _ready() -> void:
 	#===================sometimes timer==================
 	var sometimes_timer = Timer.new()
 	add_child(sometimes_timer)
-	sometimes_timer.wait_time = 9
+	sometimes_timer.wait_time = 12
 	sometimes_timer.start()
 	sometimes_timer.timeout.connect(Sometimes_Voice)
 	
@@ -46,38 +72,6 @@ func _ready() -> void:
 	var uptime_min = int(total_seconds / 60) % 60
 	var Uptime =  str(uptime_hour) + " hours and " +  str(uptime_min) + " min "
 	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	sometimes_voice.append("This system has been running for " + Uptime)
-	
 	if uptime_hour > 20:
 		sometimes_voice.append("Its good to restart your system from time to time, just saying")
 	if uptime_hour > 119:
@@ -97,7 +91,7 @@ func _ready() -> void:
 		greeting_voice.append("There is only one person i know with that name , and its not you ")
 	else:
 		greeting_voice.append("Hello " + username + "!")
-		d = rng.randf_range(6, greeting_voice.size() - 1)
+		d = rng.randf_range(0, greeting_voice.size() - 1)
 		
 	#=======================Window settings====================
 	set_flag(Window.FLAG_NO_FOCUS, true)
@@ -108,7 +102,7 @@ func _ready() -> void:
 	text.add_theme_font_override("normal_font", font)
 	text.add_theme_font_size_override("normal_font_size", 16)
 	printText(words)
-
+	print(sometimes_voice.size())
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	#Testing thing
@@ -189,3 +183,20 @@ func get_windows_uptime() -> int:
 		return output[0].strip_edges().to_float()
 	
 	return -1.0 # Failed to retrieve
+func desktop_iconsCoubt() -> int:
+	var dir := DirAccess.open(OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP))
+	if dir == null:
+		return -1
+	return dir.get_files().size() + dir.get_directories().size()
+func desktop_iconsGet(keyword : String ) -> bool:
+	var dir := DirAccess.open(OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP))
+	if dir == null:
+		return false
+	var files := dir.get_files()
+	for f in dir.get_files() :
+		var ext := f.get_extension().to_lower()
+		if (ext == "lnk" or ext == "url") and f.to_lower() == keyword.to_lower()  :
+			return true
+	return false
+	
+	

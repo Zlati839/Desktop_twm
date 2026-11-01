@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dta3jyvwshaxn"]
+
+[ext_resource type="Script" uid="uid://hst7v76gb5qg" path="res://PopupMenu.gd" id="1_d4l3m"]
+[ext_resource type="Texture2D" uid="uid://bfi1h6s53ixru" path="res://PopupTexture.png" id="2_hx1qj"]
+
+[node name="Node2D" type="Window"]
+position = Vector2i(0, 36)
+script = ExtResource("1_d4l3m")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 266.0
+offset_bottom = 440.0
+texture = ExtResource("2_hx1qj")
