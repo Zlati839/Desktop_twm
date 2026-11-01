@@ -15,3 +15,7 @@ the animations and the window
 
 # Inspiration 
 I got the idea for the screen shaking from a person on r/OneShot who has made an similar project 
+
+# How to use 
+Just open the application and they will sit on your screen teleporting around ,
+talking and getting in your way probably . Thats all they do for now
