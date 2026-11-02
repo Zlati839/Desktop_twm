@@ -1,3 +1,5 @@
+# Pop up menu 
+# Can wlak out of their window 
 extends Window
 var main: Node2D
 var font := load("res://Terminus-TTF-Bold-700.ttf")
@@ -15,27 +17,39 @@ var pressed = false
 var speaking = false
 var dizzy = false
 # Called when the node enters the scene tree for the first time.
-var greeting_voice = ["Hello!" , "Greetings" , "Nice to see you agian", "How have you been ?" , "Hi agian" ]
+var greeting_voice = ["Hello!" , "Greetings" , "How have you been ?",   ]
 var teleport_voice = ["Whats this ?", "Whats over here ?" , "I will just move a litle ", "How about over here ?" , "Surprise!" , "Just exploring!" ]
 var drag_voice = ["Release me !" , "Why are you moving me ?" , "What are you doing ?" , "You could have just asked"]
-var sometimes_voice = ["What are you working on ?" , "Do you think Niko remembers me  ?" , "Do programs also have motion sickness ?" , "Its really messy in here" , "I wounder if im able to ecape this window " ,"Can you see everything I do?" , "Sometimes I forget how small this window is.","What's the weather like outside?","Make sure to take a break every now and then.","Make sure you're getting enough sleep.", "It's nice having someone to talk to.", "If i draw will it be considered ai generated ?" , "I wonder if Niko is doing alright." , "Remember to stretch a little!" , "I hope I'm not distracting you."]
+var sometimes_voice = ["What are you working on ?" , "Do you think Niko remembers me  ?" , "Do programs also have motion sickness ?" , "I wounder if im able to ecape this window " ,"Can you see everything I do?" , "Sometimes I forget how small this window is.","What's the weather like outside?","Make sure to take a break every now and then.","Make sure you're getting enough sleep.", "It's nice having someone to talk to.", "I wonder if Niko is doing alright." , "Remember to stretch a little!" , "I hope I'm not distracting you."]
 var shake_voice = ["Why did you have to do this ?" , "Stop it !!!" , "Programs do have motion sickness !" , "I dont feel good " , "I dont like this !", "I think I'm going to be sick..."]
 
 func _ready() -> void:
+	UpdateActiveApps()
+	var my_timer = Timer.new()
+	add_child(my_timer) 
+	my_timer.wait_time = 20
+	my_timer.timeout.connect(UpdateActiveApps)
+	my_timer.start()
+	#===============================App specific voicelines ====================
 	if desktop_iconsGet("Spotify.lnk"):
 		sometimes_voice.append("I see you have spotify , what kind of music do you listend to ?")
 		sometimes_voice.append("Do you listen to any of my worlds music ? ")
 	if desktop_iconsGet("OneShot.url"):
+		greeting_voice.append("Nice to see you agian")
+		greeting_voice.append("Hi agian" )
 		sometimes_voice.append("You still have me on your system after sending niko home ?")
 		sometimes_voice.append("You still have the game installed?")
 		sometimes_voice.append("I suppose some memories are worth keeping.")
+	if desktop_iconsGet("OneShot.url") == false and  desktop_iconsGet("OneShot World Machine Edition.url") == false:
+		greeting_voice.append("Hello , nice to meet you !")
+		greeting_voice.append("Hello im The World Machine !")
+	if  desktop_iconsGet("OneShot World Machine Edition.url") :
+		greeting_voice.append("Nice to see you agian")
+		greeting_voice.append("Hi agian" )
 	if desktop_iconsGet("Terraria.url"):
 		sometimes_voice.append("You have Terraira ? OneShot is better")
-	if desktop_iconsGet("tModLoader.url"):
-		sometimes_voice.append("Rip calamity")
 	if desktop_iconsGet("Steam.lnk"):
 		sometimes_voice.append("MY PROGRAM IS BEING SOLD ON STEAM !?!?!?!?")
-		sometimes_voice.append("Steam has some good discounts !")
 	if desktop_iconsGet("Krita.url"):
 		sometimes_voice.append("Do you like drawing on krita ?")
 		sometimes_voice.append("Do you use krita often ?")
@@ -43,9 +57,11 @@ func _ready() -> void:
 		sometimes_voice.append("Do program often ?")
 	if desktop_iconsGet("OneShot.url") and desktop_iconsGet("OneShot World Machine Edition.url") :
 		sometimes_voice.append("You bought my software twice ?")
+	#==========================Icon specifix dialog ==============
 	var icon_count = desktop_iconsCoubt()
 	if icon_count > 20 :
 		sometimes_voice.append("is it aways this messy around here ?")
+		sometimes_voice.append("Its really messy in here")
 	if icon_count <= 20 :
 		sometimes_voice.append("Nice ! An organised desktop")
 	#=======================Time specific dialog =============
@@ -128,11 +144,11 @@ func printText(texxt) -> void:
 	var txt = str(texxt)
 	for i in txt:
 		text.text += i
-		await get_tree().create_timer(0.04).timeout
+		await get_tree().create_timer(0.06).timeout
 	if not dizzy:
 		main.Normal()
 		switch_faceNormal()
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(1.6).timeout
 	main.Normal()
 	visible = false
 	text.text = ""
@@ -164,7 +180,6 @@ func Shake_Voice():
 	var d = rng.randf_range(0, shake_voice.size() - 1)
 	words = shake_voice[d]
 	printText(words)
-	
 # Sprite Switch
 func switch_faceRandom() -> void :
 	sprite.texture = load("res://Talking_Twm.png")
@@ -173,6 +188,7 @@ func switch_faceNormal() -> void :
 func switch_faceDizzy() -> void:
 	sprite.texture = load("res://Dizzy_twm.png")
 
+#========================System checking comands =========================
 func get_windows_uptime() -> int:
 	var output = []
 	var args = ["-Command", "(Get-Counter '\\System\\System Up Time').CounterSamples[0].CookedValue"]
@@ -198,5 +214,22 @@ func desktop_iconsGet(keyword : String ) -> bool:
 		if (ext == "lnk" or ext == "url") and f.to_lower() == keyword.to_lower()  :
 			return true
 	return false
-	
-	
+func get_active_apps(process_name : String) -> bool:
+	var output = []
+	var exit_code = OS.execute("tasklist.exe",["/FI", "IMAGENAME eq " + process_name],output,true)
+	if output.size() > 0:
+				return output[0].to_lower().contains(process_name.to_lower())
+	return false
+func UpdateActiveApps():
+	if get_active_apps("Discord.exe"):
+		sometimes_voice.append("I see you have Discord opened ")
+		sometimes_voice.append("I wish Discord worked between worlds too ")
+	if get_active_apps("obs64.exe"):
+		sometimes_voice.append("Am i being recorded ?")
+	if get_active_apps("twitch.exe"):
+		sometimes_voice.append("Are you a streamer ?")
+	if get_active_apps("Spotify.exe"):
+		sometimes_voice.append("I see you have Spotify opened")
+	if get_active_apps("OneShot.exe"):
+		printText("See you in my world!!!!")
+		printText("I will be waiting for you in my world")
