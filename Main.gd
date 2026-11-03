@@ -33,6 +33,7 @@ func _ready() -> void:
 	
 	previuos = get_window().position.x
 	speach.main = self
+	PopUp.main = self
 	#======================2ND WINDOW============
 	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
 	speach.visible = false
@@ -113,15 +114,34 @@ func _input(event: InputEvent) -> void:
 	else:
 			dragging = false
 			lock = true
+			shaken_times = 0
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if Geometry2D.is_point_in_polygon(get_window().get_mouse_position(), calculated_polygon):
+			PopUp.visible = not PopUp.visible 
+	
 	if event is InputEventKey and event.keycode == KEY_E and event.pressed:
 		speach.Drag_Voice()
 func blink() -> void:
-	if not speach.dizzy :
+	if not speach.dizzy or speach.speaking :
 		Buddy.play("Blink")
 func Speak() -> void:
 	Buddy.play("Talking_animation")
 func Normal() -> void:
 	Buddy.play("new_animation")
+func Happy() -> void:
+	Buddy.play("Happy")
+func Happier() -> void:
+	Buddy.play("Happier")
+func Guilty() -> void:
+	Buddy.play("Guilty")
+func Sleepy() -> void:
+	Buddy.play("Sleepy")
+func Shocked() -> void:
+	Buddy.play("Shocked")
+func Worried() -> void:
+	Buddy.play("Worried")
+
+
 
 func detect_shake() -> void :
 	var current = get_window().position.x

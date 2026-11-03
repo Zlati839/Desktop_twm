@@ -1,7 +1,31 @@
-[gd_scene load_steps=3 format=3 uid="uid://dta3jyvwshaxn"]
+[gd_scene load_steps=15 format=3 uid="uid://dta3jyvwshaxn"]
 
 [ext_resource type="Script" uid="uid://hst7v76gb5qg" path="res://PopupMenu.gd" id="1_d4l3m"]
 [ext_resource type="Texture2D" uid="uid://bfi1h6s53ixru" path="res://PopupTexture.png" id="2_hx1qj"]
+[ext_resource type="FontFile" uid="uid://7f8k2osrn2gg" path="res://Terminus-TTF-Bold-700.ttf" id="3_hx1qj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ldvvv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hx1qj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nlaj2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nbsry"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xr8ar"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s3bwu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d4l3m"]
+bg_color = Color(1, 1, 1, 0.141176)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_psa75"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s3yp5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4r16t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d4l3m"]
 
 [node name="Node2D" type="Window"]
 position = Vector2i(0, 36)
@@ -11,3 +35,29 @@ script = ExtResource("1_d4l3m")
 offset_right = 266.0
 offset_bottom = 440.0
 texture = ExtResource("2_hx1qj")
+
+[node name="Button" type="Button" parent="TextureRect"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 33.0
+offset_right = 243.0
+offset_bottom = 92.0
+theme_override_colors/font_color = Color(0.647059, 0, 0.945098, 1)
+theme_override_colors/font_focus_color = Color(0.647059, 0, 0.945098, 1)
+theme_override_colors/font_pressed_color = Color(0.647059, 0, 0.945098, 1)
+theme_override_fonts/font = ExtResource("3_hx1qj")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ldvvv")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_hx1qj")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nlaj2")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_nbsry")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_xr8ar")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_s3bwu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_d4l3m")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_psa75")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_s3yp5")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_4r16t")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_d4l3m")
+text = "Shut down"
+
+[connection signal="button_down" from="TextureRect/Button" to="." method="_on_button_button_down"]
