@@ -221,6 +221,7 @@ func switch_faceRandom() -> void :
 	match Chance:
 		1:
 			switch_faceTalking()
+			main.Speak()
 		2:
 			switch_faceHappy()
 			main.Happy()

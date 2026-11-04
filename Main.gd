@@ -54,7 +54,7 @@ func _ready() -> void:
 	PopUp.transparent_bg = true
 	PopUp.borderless = true
 	PopUp.always_on_top = true
-	PopUp.size = Vector2i(270, 440)
+	PopUp.size = Vector2i(270, 340)
 	PopUp.position = Vector2i(200, 200)
 	add_child(PopUp)
 	#=======================TIMERS=========================
@@ -95,8 +95,8 @@ func _process(delta: float) -> void:
 	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
 	speach.position.x = int(buddy_screen.x - speach.size.x / 2 - 50)
 	speach.position.y = int(buddy_screen.y)
-	PopUp.position.x = int(buddy_screen.x - speach.size.x / 1.7 )
-	PopUp.position.y = int(buddy_screen.y - speach.size.y * 2.2)
+	PopUp.position.x = int(buddy_screen.x - speach.size.x / 1.75 )
+	PopUp.position.y = int(buddy_screen.y - speach.size.y )
 	var world_space = PackedVector2Array()
 	var stuff = Buddy_Boddy.get_global_transform_with_canvas()
 	for p in Buddy_Boddy.polygon:

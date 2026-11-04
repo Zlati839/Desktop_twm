@@ -241,13 +241,14 @@ position = Vector2(575, 322)
 script = ExtResource("1_q6r6c")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-471, -213)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-480, -239)
+position = Vector2(-477, -231)
 rotation = -0.00367577
 scale = Vector2(0.316616, 0.332039)
 sprite_frames = SubResource("SpriteFrames_y32ns")
-animation = &"Worried"
+animation = &"Talking_animation"
 script = ExtResource("6_kdubu")
 metadata/_aseprite_wizard_interface_config_ = {
 "animation_section": true,

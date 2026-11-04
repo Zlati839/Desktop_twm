@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://df3fn1dwg378g"]
+
+[ext_resource type="Texture2D" uid="uid://q2d7o7rvlfm2" path="res://Test1.png" id="1_fpssi"]
+[ext_resource type="Script" uid="uid://dtkkk5jrnkctx" path="res://walk_out.gd" id="1_rm1gk"]
+[ext_resource type="Texture2D" uid="uid://dm4cvsb20dkj5" path="res://Test2.png" id="2_twyae"]
+[ext_resource type="Texture2D" uid="uid://8s52jd2e8ny7" path="res://Test3.png" id="3_rm1gk"]
+[ext_resource type="Texture2D" uid="uid://dh2dfsf5vhiql" path="res://Test4.png" id="4_pw0s7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mbi4m"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fpssi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_twyae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_rm1gk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_pw0s7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_rm1gk")
+
+[node name="Test1" type="AnimatedSprite2D" parent="."]
+position = Vector2(100, 133)
+scale = Vector2(6.83333, 7.0625)
+sprite_frames = SubResource("SpriteFrames_mbi4m")
+frame_progress = 0.499199
+
+[node name="Polygon2D" type="Polygon2D" parent="Test1"]
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(-0.585366, -4.42478, 2.4878, -4.42478, 4.97561, -3.00885, 7.02439, 0.106195, 7.31707, 3.22124, 5.41463, 5.34513, 4.39024, 5.76991, 5.70732, 6.76106, 6.58537, 8.74336, 6.58537, 11.1504, 4.82927, 12.1416, 1.31707, 12.9912, -5.70732, 12.9912, -7.60976, 10.0177, -7.02439, 7.46903, -5.56098, 5.76991, -4.2439, 5.91151, -7.31707, 3.78761, -7.46341, 0.530974, -6.43902, -1.87611, -4.82927, -3.71681, -2.92683, -4.56637)
