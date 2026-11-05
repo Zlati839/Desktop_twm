@@ -8,8 +8,10 @@ var rng = RandomNumberGenerator.new()
 var random_time = rng.randf_range(25, 50)
 var D = preload("res://SpeachWindow.tscn")
 var P = preload("res://PopUp.tscn")
+var W = preload("res://WalkOut.tscn")
 var speach: Window = D.instantiate()
 var PopUp: Window = P.instantiate()
+var Walk: Window = W.instantiate()
 var speak = false
 var lock = true
 var direction = 0
@@ -121,6 +123,7 @@ func _input(event: InputEvent) -> void:
 	
 	if event is InputEventKey and event.keycode == KEY_E and event.pressed:
 		speach.Drag_Voice()
+
 func blink() -> void:
 	if not speach.dizzy or speach.speaking :
 		Buddy.play("Blink")
@@ -165,3 +168,5 @@ func detect_shake() -> void :
 		previuos_direction = 0
 		previuos = get_window().position.x
 		
+func Walk_Out():
+	add_child(Walk)

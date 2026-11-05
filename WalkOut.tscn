@@ -1,13 +1,58 @@
-[gd_scene load_steps=7 format=3 uid="uid://df3fn1dwg378g"]
+[gd_scene load_steps=15 format=3 uid="uid://df3fn1dwg378g"]
 
 [ext_resource type="Texture2D" uid="uid://q2d7o7rvlfm2" path="res://Test1.png" id="1_fpssi"]
 [ext_resource type="Script" uid="uid://dtkkk5jrnkctx" path="res://walk_out.gd" id="1_rm1gk"]
 [ext_resource type="Texture2D" uid="uid://dm4cvsb20dkj5" path="res://Test2.png" id="2_twyae"]
+[ext_resource type="Texture2D" uid="uid://n8r1y3vbdeqe" path="res://Walk_left1.png" id="3_2mqab"]
 [ext_resource type="Texture2D" uid="uid://8s52jd2e8ny7" path="res://Test3.png" id="3_rm1gk"]
+[ext_resource type="Texture2D" uid="uid://i4rnx0vxbfm1" path="res://Walk_left2.png" id="4_gh31n"]
 [ext_resource type="Texture2D" uid="uid://dh2dfsf5vhiql" path="res://Test4.png" id="4_pw0s7"]
+[ext_resource type="Texture2D" uid="uid://c00il5pk6ju5v" path="res://Walk_left3.png" id="5_867qy"]
+[ext_resource type="Texture2D" uid="uid://ba8dc1tg10srf" path="res://Walk_left4.png" id="6_c63xa"]
+[ext_resource type="Texture2D" uid="uid://cbn54gew4qdf1" path="res://Walk_right1.png" id="7_7jaa2"]
+[ext_resource type="Texture2D" uid="uid://b0jq5ychbjmof" path="res://Walk_right2.png" id="8_eupaq"]
+[ext_resource type="Texture2D" uid="uid://bl84fjn6dmo8o" path="res://Walk_right3.png" id="9_o8nui"]
+[ext_resource type="Texture2D" uid="uid://6j5w3vnx2kdg" path="res://Walk_right4.png" id="10_umrpy"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mbi4m"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fpssi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2mqab")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gh31n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_867qy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_c63xa")
+}],
+"loop": true,
+"name": &"WalkLeft",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_7jaa2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_eupaq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_o8nui")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_umrpy")
+}],
+"loop": true,
+"name": &"WalkRight",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_fpssi")
@@ -26,14 +71,16 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Window"]
+position = Vector2i(0, 36)
+size = Vector2i(99, 125)
 script = ExtResource("1_rm1gk")
 
 [node name="Test1" type="AnimatedSprite2D" parent="."]
-position = Vector2(100, 133)
+position = Vector2(50, 32)
 scale = Vector2(6.83333, 7.0625)
 sprite_frames = SubResource("SpriteFrames_mbi4m")
-frame_progress = 0.499199
+animation = &"WalkRight"
 
 [node name="Polygon2D" type="Polygon2D" parent="Test1"]
 color = Color(1, 1, 1, 0)

@@ -60,7 +60,7 @@ func _ready() -> void:
 		sometimes_voice.append("Do you like drawing on krita ?")
 		sometimes_voice.append("Do you use krita often ?")
 	if desktop_iconsGet("Visual Studio Code.lnk"):
-		sometimes_voice.append("Do program often ?")
+		sometimes_voice.append("Do you program often ?")
 	if desktop_iconsGet("OneShot.url") and desktop_iconsGet("OneShot World Machine Edition.url") :
 		sometimes_voice.append("You bought my software twice ?")
 	#==========================Icon specifix dialog ==============
