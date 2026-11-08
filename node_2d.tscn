@@ -129,6 +129,20 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("34_qilgh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_qilgh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_qilgh")
+}],
+"loop": true,
+"name": &"Empty",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("24_xjt7e")
 }],
 "loop": true,
@@ -248,7 +262,7 @@ position = Vector2(-485, -241)
 rotation = -0.00367577
 scale = Vector2(0.316616, 0.332039)
 sprite_frames = SubResource("SpriteFrames_y32ns")
-animation = &"Talking_animation"
+animation = &"new_animation"
 script = ExtResource("6_kdubu")
 metadata/_aseprite_wizard_interface_config_ = {
 "animation_section": true,

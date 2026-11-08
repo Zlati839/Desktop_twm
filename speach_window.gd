@@ -1,5 +1,8 @@
-# Pop up menu 
-# Can wlak out of their window 
+#Settings
+#Walking Out The WIndow voicelines
+#Voicelines for roaming Twm
+#Sometimes WalkL is stuck as true
+#Make roaming Twm be able to iteract with the empty window
 extends Window
 var main: Node2D
 var font := load("res://Terminus-TTF-Bold-700.ttf")
@@ -84,7 +87,7 @@ func _ready() -> void:
 	#===================sometimes timer==================
 	var sometimes_timer = Timer.new()
 	add_child(sometimes_timer)
-	sometimes_timer.wait_time = 12
+	sometimes_timer.wait_time = 9
 	sometimes_timer.start()
 	sometimes_timer.timeout.connect(Sometimes_Voice)
 	
@@ -139,7 +142,7 @@ func _process(delta: float) -> void:
 	
 # To display words little by little , LIKE IN ONESHOT !!!!
 func printText(texxt) -> void:
-	if speaking:
+	if speaking or main.OutTheWindow:
 		return
 	if not dizzy:
 		main.Speak()
@@ -179,7 +182,7 @@ func Drag_Voice():
 		words = drag_voice[d]
 		printText(words)
 func Sometimes_Voice():
-	var chance  =  rng.randi_range(0, 5)
+	var chance  =  rng.randi_range(0, 4)
 	if chance == 0 and not tapped_sometimes :
 		tapped_sometimes = true
 		var d = rng.randi_range(0, sometimes_voice.size() - 1)

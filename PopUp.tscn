@@ -112,3 +112,4 @@ text = "Exit Window"
 
 [connection signal="button_down" from="TextureRect/Button" to="." method="_on_button_button_down"]
 [connection signal="button_down" from="TextureRect/Button2" to="." method="_on_button_2_button_down"]
+[connection signal="button_down" from="TextureRect/Button3" to="." method="_on_button_3_button_down"]

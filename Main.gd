@@ -19,6 +19,7 @@ var previuos = 0
 var previuos_direction = 0
 var shaken_times = 0
 var starting = false
+var OutTheWindow = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#===================SETTINGS======================
@@ -62,18 +63,25 @@ func _ready() -> void:
 	#=======================TIMERS=========================
 	var my_timer = Timer.new()
 	var blink_timer = Timer.new()
+	var Out_chance = Timer.new()
 	add_child(my_timer) 
 	add_child(blink_timer)
+	add_child(Out_chance)
 	my_timer.wait_time = random_time
 	blink_timer.wait_time = 6
+	Out_chance.wait_time = 20
 	blink_timer.timeout.connect(blink)
 	my_timer.timeout.connect(teleport)
+	Out_chance.timeout.connect(ChanceToWalkOut)
 	my_timer.start()
 	blink_timer.start()
+	Out_chance.start()
+	
 	
 
 func teleport() -> void:
-	if not dragging:
+	if not dragging and not OutTheWindow:
+		UpdatePopUp()
 		var max_coordsX = DisplayServer.screen_get_size().x
 		var max_coordsY = DisplayServer.screen_get_size().y
 		var safe_max_x = max_coordsX - get_window().size.x #get_window.size is window size
@@ -89,16 +97,15 @@ func teleport() -> void:
 var i = 0
 func _process(delta: float) -> void:
 	detect_shake()
+	if dragging:
+		UpdatePopUp()
+	if dragging or speach.speaking:
+		UpdateText()
 	if dragging and not speak and lock:
 		lock = false
 		var Chance_Drag = rng.randi_range(0,3)
 		if Chance_Drag == 2:
 			speach.Drag_Voice()
-	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
-	speach.position.x = int(buddy_screen.x - speach.size.x / 2 - 50)
-	speach.position.y = int(buddy_screen.y)
-	PopUp.position.x = int(buddy_screen.x - speach.size.x / 1.75 )
-	PopUp.position.y = int(buddy_screen.y - speach.size.y )
 	var world_space = PackedVector2Array()
 	var stuff = Buddy_Boddy.get_global_transform_with_canvas()
 	for p in Buddy_Boddy.polygon:
@@ -117,15 +124,18 @@ func _input(event: InputEvent) -> void:
 			dragging = false
 			lock = true
 			shaken_times = 0
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and not OutTheWindow:
 		if Geometry2D.is_point_in_polygon(get_window().get_mouse_position(), calculated_polygon):
+			UpdatePopUp()
 			PopUp.visible = not PopUp.visible 
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_released() and OutTheWindow:
+		WalkIn()
 	
-	if event is InputEventKey and event.keycode == KEY_E and event.pressed:
+	if event is InputEventKey and event.keycode == KEY_E and event.pressed and not OutTheWindow:
 		speach.Drag_Voice()
 
 func blink() -> void:
-	if not speach.dizzy or speach.speaking :
+	if not OutTheWindow and (not speach.dizzy or speach.speaking):
 		Buddy.play("Blink")
 func Speak() -> void:
 	Buddy.play("Talking_animation")
@@ -143,30 +153,52 @@ func Shocked() -> void:
 	Buddy.play("Shocked")
 func Worried() -> void:
 	Buddy.play("Worried")
-
-
+func UpdateText() -> void:
+	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position
+	speach.position.x = int(buddy_screen.x - speach.size.x / 2 - 50)
+	speach.position.y = int(buddy_screen.y)
+func UpdatePopUp() -> void:
+	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
+	PopUp.position.x = int(buddy_screen.x - speach.size.x / 1.75 )
+	PopUp.position.y = int(buddy_screen.y - speach.size.y )
 
 func detect_shake() -> void :
-	var current = get_window().position.x
-	var movement = current - previuos 
-	if dragging :
-		direction = sign(movement)
-		if direction != 0:
-			if previuos_direction != 0 and direction != previuos_direction:
-				shaken_times += 1
-		if direction == -1:
-			previuos_direction = -1
+	if not OutTheWindow:
+		var current = get_window().position.x
+		var movement = current - previuos 
+		if dragging :
+			direction = sign(movement)
+			if direction != 0:
+				if previuos_direction != 0 and direction != previuos_direction:
+					shaken_times += 1
+			if direction == -1:
+				previuos_direction = -1
+				previuos = get_window().position.x
+			elif direction == 1:
+				previuos_direction = 1
+				previuos = get_window().position.x 
+		if shaken_times > 17 :
+			speach.dizzy = true
+			Buddy.play("Dizzy_animation")
+			speach.Shake_Voice()
+			shaken_times = 0
+			previuos_direction = 0
 			previuos = get_window().position.x
-		elif direction == 1:
-			previuos_direction = 1
-			previuos = get_window().position.x 
-	if shaken_times > 17 :
-		speach.dizzy = true
-		Buddy.play("Dizzy_animation")
-		speach.Shake_Voice()
-		shaken_times = 0
-		previuos_direction = 0
-		previuos = get_window().position.x
 		
 func Walk_Out():
+	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
+	Walk.position.x = buddy_screen.x
+	Walk.position.y = buddy_screen.y
+	Buddy.play("Empty")
+	OutTheWindow = true
+	PopUp.visible = false
 	add_child(Walk)
+
+func ChanceToWalkOut():
+	var random_chance = rng.randi_range(1, 20)
+	if random_chance == 5:
+		Walk_Out()
+func WalkIn():
+	Buddy.play("new_animation")
+	OutTheWindow = false
+	remove_child(Walk)

@@ -1,10 +1,13 @@
-[gd_scene load_steps=15 format=3 uid="uid://df3fn1dwg378g"]
+[gd_scene load_steps=18 format=3 uid="uid://df3fn1dwg378g"]
 
 [ext_resource type="Texture2D" uid="uid://q2d7o7rvlfm2" path="res://Test1.png" id="1_fpssi"]
 [ext_resource type="Script" uid="uid://dtkkk5jrnkctx" path="res://walk_out.gd" id="1_rm1gk"]
+[ext_resource type="Texture2D" uid="uid://b5w0jrymolkqe" path="res://Defult1.png" id="2_c63xa"]
 [ext_resource type="Texture2D" uid="uid://dm4cvsb20dkj5" path="res://Test2.png" id="2_twyae"]
 [ext_resource type="Texture2D" uid="uid://n8r1y3vbdeqe" path="res://Walk_left1.png" id="3_2mqab"]
+[ext_resource type="Texture2D" uid="uid://cw11le8rn5v4h" path="res://DefultRight.png" id="3_7jaa2"]
 [ext_resource type="Texture2D" uid="uid://8s52jd2e8ny7" path="res://Test3.png" id="3_rm1gk"]
+[ext_resource type="Texture2D" uid="uid://ewh1xvrolf6o" path="res://DefultLeft.png" id="4_eupaq"]
 [ext_resource type="Texture2D" uid="uid://i4rnx0vxbfm1" path="res://Walk_left2.png" id="4_gh31n"]
 [ext_resource type="Texture2D" uid="uid://dh2dfsf5vhiql" path="res://Test4.png" id="4_pw0s7"]
 [ext_resource type="Texture2D" uid="uid://c00il5pk6ju5v" path="res://Walk_left3.png" id="5_867qy"]
@@ -18,8 +21,29 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_fpssi")
+"texture": ExtResource("2_c63xa")
+}],
+"loop": true,
+"name": &"LookAtUser",
+"speed": 5.0
 }, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7jaa2")
+}],
+"loop": true,
+"name": &"Normal-right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_eupaq")
+}],
+"loop": true,
+"name": &"Normal_left",
+"speed": 5.0
+}, {
+"frames": [{
 "duration": 1.0,
 "texture": ExtResource("3_2mqab")
 }, {
@@ -77,11 +101,12 @@ size = Vector2i(99, 125)
 script = ExtResource("1_rm1gk")
 
 [node name="Test1" type="AnimatedSprite2D" parent="."]
-position = Vector2(50, 32)
-scale = Vector2(6.83333, 7.0625)
+position = Vector2(54, 64)
+scale = Vector2(2.375, 2.12447)
 sprite_frames = SubResource("SpriteFrames_mbi4m")
-animation = &"WalkRight"
+animation = &"Normal_left"
 
 [node name="Polygon2D" type="Polygon2D" parent="Test1"]
+position = Vector2(5.47369, -8.002)
 color = Color(1, 1, 1, 0)
-polygon = PackedVector2Array(-0.585366, -4.42478, 2.4878, -4.42478, 4.97561, -3.00885, 7.02439, 0.106195, 7.31707, 3.22124, 5.41463, 5.34513, 4.39024, 5.76991, 5.70732, 6.76106, 6.58537, 8.74336, 6.58537, 11.1504, 4.82927, 12.1416, 1.31707, 12.9912, -5.70732, 12.9912, -7.60976, 10.0177, -7.02439, 7.46903, -5.56098, 5.76991, -4.2439, 5.91151, -7.31707, 3.78761, -7.46341, 0.530974, -6.43902, -1.87611, -4.82927, -3.71681, -2.92683, -4.56637)
+polygon = PackedVector2Array(-5.05264, -21.6525, 3.36842, -21.6525, 11.3684, -20.711, 13.0526, -9.88482, 13.0526, 6.11917, 13.0526, 17.4161, 13.0526, 33.4201, 13.0526, 36.715, 3.78947, 36.715, -4.63158, 36.715, -14.7369, 36.715, -22.7369, 35.3029, -26.1053, 27.3009, -26.5263, 15.5333, -27.3684, 9.41411, -27.7895, 5.64846, -27.7895, 0.941406, -28.2105, -2.82424, -27.3684, -6.11917, -27.7895, -14.5919, -19.3684, -18.3575, -13.4737, -21.1817)

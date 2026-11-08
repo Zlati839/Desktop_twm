@@ -15,6 +15,8 @@ var right_wall = 0
 var climbing = false
 var dragging = false
 var falling = false
+var climbRight = false
+var climbLeft = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -37,6 +39,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	print(walkL)
 	var window = get_window()
 	var target_y = usable_rect.position.y  - window.size.y + usable_rect.size.y
 	get_window().position.y += gravity
@@ -57,15 +60,17 @@ func _process(delta: float) -> void:
 	get_window().mouse_passthrough_polygon = world_space
 
 func Walk():
-	walkL = true
-	var random = rng.randi_range(1, 4)
-	match random:
-		1:
-			walkRight()
-		2:
-			walkLeft()
-		3:
-			pass
+	if not walkL:
+		walkL = true
+		var random = rng.randi_range(1, 3)
+		print(random)
+		match random:
+			1:
+				walkRight()
+			2:
+				walkLeft()
+			3:
+				walkL = false
 func walkRight():
 	if walkL and not climbing and not falling and not dragging:
 		var timer = 0.0
@@ -74,12 +79,13 @@ func walkRight():
 		while timer < random :
 			if get_window().position.x > right_wall :
 				walkL = false
+				climbRight = true
 				Climbing()
 				break
 			get_window().position.x += WalkingSpeed
 			await get_tree().create_timer(0.016).timeout
 			timer += 0.016
-		Buddy.play("default")
+		Buddy.play("Normal-right")
 		walkL = false
 func walkLeft():
 	if walkL and not climbing and not falling and not dragging:
@@ -90,13 +96,14 @@ func walkLeft():
 			if  get_window().position.x < left_wall :
 				Climbing()
 				walkL = false
+				climbLeft = true
 				break
 			if  dragging :
 				break
 			get_window().position.x -= WalkingSpeed
 			await get_tree().create_timer(0.016).timeout
 			timer += 0.016
-		Buddy.play("default")
+		Buddy.play("Normal_left")
 		walkL = false
 func Climb():
 	if climbing:
@@ -106,16 +113,13 @@ func Climb():
 			get_window().position.y -= ClimbingSpeed
 			await get_tree().create_timer(0.016).timeout
 			timer += 0.016
-		Buddy.play("default")
+		if climbLeft:
+			Buddy.play("Normal_left")
+		if climbRight:
+			Buddy.play("Normal-right")
 		climbing = false
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		if Geometry2D.is_point_in_polygon(get_window().get_mouse_position(), calculated_polygon):
-			dragging = true
-			DisplayServer.window_start_drag(get_window_id())
-	else:
-			dragging = false
+		climbLeft = false
+		climbRight = false
 func Climbing():
 	var random = rng.randi_range(1, 4)
 	match random:
@@ -127,5 +131,14 @@ func Climbing():
 			Climb()
 		3:
 			climbing = false
-	
+			climbLeft = false
+			climbRight = false
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if Geometry2D.is_point_in_polygon(get_window().get_mouse_position(), calculated_polygon):
+			dragging = true
+			DisplayServer.window_start_drag(get_window_id())
+	else:
+			dragging = false
 	
