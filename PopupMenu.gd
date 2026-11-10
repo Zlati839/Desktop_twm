@@ -3,10 +3,25 @@ var main: Node2D
 @onready var ShutOff = $TextureRect/Button
 @onready var Settings = $TextureRect/Button2
 @onready var ExitWindow = $TextureRect/Button3
+@onready var Back = $TextureRect/Button4
+@onready var Text = $TextureRect/RichTextLabel
+@onready var More = $TextureRect/Button5
+@onready var Common = $TextureRect/Button6
+@onready var Less = $TextureRect/Button7
+@onready var On = $TextureRect/Button9
+@onready var Off = $TextureRect/Button8
+@onready var text2 = $TextureRect/RichTextLabel2
+var settings = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
-
+	Back.visible = false
+	Text.visible = false
+	More.visible = false
+	Common.visible = false
+	Less.visible = false
+	On.visible = false
+	Off.visible = false
+	text2.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -16,10 +31,59 @@ func _process(delta: float) -> void:
 func _on_button_button_down() -> void:
 	main.speach.Goodbye_Voice()
 
-
 func _on_button_2_button_down() -> void:
-	pass
-
-
+	settings = true
+	if settings:
+		ShutOff.visible = false
+		Settings.visible = false
+		ExitWindow.visible = false
+		Back.visible = true
+		Text.visible = true
+		More.visible = true
+		Common.visible = true
+		Less.visible = true
+		On.visible = true
+		Off.visible = true
+		text2.visible = true
+		
 func _on_button_3_button_down() -> void:
-	main.Walk_Out()
+	if not main.speach.speaking:
+		main.Walk_Out()
+		main.WalkingVoice.Exiting_voice()
+
+
+
+func _on_button_4_button_down() -> void:
+	settings = false
+	if not settings:
+		ShutOff.visible = true
+		Settings.visible = true
+		ExitWindow.visible = true
+		Back.visible = false
+		Text.visible = false
+		More.visible = false
+		Common.visible = false
+		Less.visible = false
+		On.visible = false
+		Off.visible = false
+		text2.visible = false
+
+
+func _on_button_5_button_down() -> void:
+	main.speach.UpdateTimer(15)
+
+
+func _on_button_6_button_down() -> void:
+	main.speach.UpdateTimer(9)
+
+
+func _on_button_7_button_down() -> void:
+	main.speach.UpdateTimer(3)
+
+
+func _on_button_8_button_down() -> void:
+	main.Tel = false
+
+
+func _on_button_9_button_down() -> void:
+	main.Tel = false

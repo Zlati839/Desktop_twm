@@ -1,8 +1,8 @@
-#Settings
-#Walking Out The WIndow voicelines
+#Sounds
+#Refusing apps to open
 #Voicelines for roaming Twm
-#Sometimes WalkL is stuck as true
 #Make roaming Twm be able to iteract with the empty window
+#Make settings voicelines <---
 extends Window
 var main: Node2D
 var font := load("res://Terminus-TTF-Bold-700.ttf")
@@ -20,6 +20,7 @@ var pressed = false
 var speaking = false
 var dizzy = false
 var exit = false
+var time_wait = 9
 # Called when the node enters the scene tree for the first time.
 var greeting_voice = ["Hello!" , "Greetings" , "How have you been ?",   ]
 var teleport_voice = ["Whats this ?", "Whats over here ?" , "I will just move a litle ", "How about over here ?" , "Surprise!" , "Just exploring!" ]
@@ -27,6 +28,8 @@ var drag_voice = ["Release me !" , "Why are you moving me ?" , "What are you doi
 var sometimes_voice = ["What are you working on ?" , "Do you think Niko remembers me  ?" , "Do programs also have motion sickness ?" , "I wounder if im able to ecape this window " ,"Can you see everything I do?" , "Sometimes I forget how small this window is.","What's the weather like outside?","Make sure to take a break every now and then.","Make sure you're getting enough sleep.", "It's nice having someone to talk to.", "I wonder if Niko is doing alright." , "Remember to stretch a little!" , "I hope I'm not distracting you."]
 var shake_voice = ["Why did you have to do this ?" , "Stop it !!!" , "Programs do have motion sickness !" , "I dont feel good " , "I dont like this !", "I think I'm going to be sick..."]
 var goodbye_voice = ["See you later !" , "Goodbye for now !" , "cya !" , "Dont get lonely without me !"]
+var returning_voice = ["You dont want me exploring your desktop ?" , "Awwww why " , " I wanted to explore more " , "Back to my window i guess " , "It was fun"]
+var sometimes_timer: Timer
 
 func _ready() -> void:
 	get_viewport().transparent_bg = true
@@ -38,6 +41,8 @@ func _ready() -> void:
 	my_timer.timeout.connect(UpdateActiveApps)
 	my_timer.start()
 	#===============================App specific voicelines ====================
+	if desktop_iconsGet("Slack.lnk"):
+		sometimes_voice.append("Join the Hack Club Slack !")
 	if desktop_iconsGet("Spotify.lnk"):
 		sometimes_voice.append("I see you have spotify , what kind of music do you listend to ?")
 		sometimes_voice.append("Do you listen to any of my worlds music ? ")
@@ -85,9 +90,9 @@ func _ready() -> void:
 		greeting_voice.append("Good Morning !")
 		greeting_voice.append("Good Morning !")
 	#===================sometimes timer==================
-	var sometimes_timer = Timer.new()
+	sometimes_timer = Timer.new()
 	add_child(sometimes_timer)
-	sometimes_timer.wait_time = 9
+	sometimes_timer.wait_time = time_wait
 	sometimes_timer.start()
 	sometimes_timer.timeout.connect(Sometimes_Voice)
 	
@@ -102,6 +107,8 @@ func _ready() -> void:
 	if uptime_hour > 119:
 		sometimes_voice.append("Your system has been running for " + Uptime + " A restart would be neat ")
 		sometimes_voice.append("Take a break ")
+	if uptime_hour > 200:
+		sometimes_voice.append("Are you torturing your system " + Uptime + " is a long time !!!! ")
 	
 	#========================Os Name======================
 	if OS.has_environment("USERNAME"):
@@ -197,6 +204,10 @@ func Goodbye_Voice():
 	words = goodbye_voice[d]
 	printText(words)
 	exit = true
+func BackToWindow_Voice():
+	var d = rng.randf_range(0, returning_voice.size() - 1)
+	words = returning_voice[d]
+	printText(words)
 
 # Sprite Switch
 func switch_faceTalking() -> void :
@@ -232,7 +243,10 @@ func switch_faceRandom() -> void :
 			switch_faceHappier()
 			main.Happier()
 	
-
+func UpdateTimer(time):
+	time_wait = time
+	if sometimes_timer:
+		sometimes_timer.wait_time = time_wait
 func dynamic_faceSwitch(text) ->void:
 	if text =="Do you think Niko remembers me  ?" :
 		switch_faceGuilty()

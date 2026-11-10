@@ -7,7 +7,6 @@ var ClimbingSpeed = 3
 var rng = RandomNumberGenerator.new()
 var random_time = rng.randf_range(2, 5)
 var walkL = false
-var walkR = false
 var calculated_polygon: PackedVector2Array = PackedVector2Array()
 var usable_rect = DisplayServer.screen_get_usable_rect()
 var left_wall = 0
@@ -39,7 +38,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	print(walkL)
 	var window = get_window()
 	var target_y = usable_rect.position.y  - window.size.y + usable_rect.size.y
 	get_window().position.y += gravity
@@ -63,7 +61,6 @@ func Walk():
 	if not walkL:
 		walkL = true
 		var random = rng.randi_range(1, 3)
-		print(random)
 		match random:
 			1:
 				walkRight()
@@ -72,39 +69,43 @@ func Walk():
 			3:
 				walkL = false
 func walkRight():
-	if walkL and not climbing and not falling and not dragging:
-		var timer = 0.0
-		var random = rng.randi_range(1, 4)
-		Buddy.play("WalkRight")
-		while timer < random :
-			if get_window().position.x > right_wall :
-				walkL = false
-				climbRight = true
-				Climbing()
-				break
-			get_window().position.x += WalkingSpeed
-			await get_tree().create_timer(0.016).timeout
-			timer += 0.016
-		Buddy.play("Normal-right")
+	if not walkL or climbing or falling or dragging:
 		walkL = false
+		return
+	var timer = 0.0
+	var random = rng.randi_range(1, 4)
+	Buddy.play("WalkRight")
+	while timer < random :
+		if get_window().position.x > right_wall :
+			walkL = false
+			climbRight = true
+			Climbing()
+			break
+		get_window().position.x += WalkingSpeed
+		await get_tree().create_timer(0.016).timeout
+		timer += 0.016
+	Buddy.play("Normal-right")
+	walkL = false
 func walkLeft():
-	if walkL and not climbing and not falling and not dragging:
-		Buddy.play("WalkLeft")
-		var timer = 0.0
-		var random = rng.randi_range(1, 4)
-		while timer < random :
-			if  get_window().position.x < left_wall :
-				Climbing()
-				walkL = false
-				climbLeft = true
-				break
-			if  dragging :
-				break
-			get_window().position.x -= WalkingSpeed
-			await get_tree().create_timer(0.016).timeout
-			timer += 0.016
-		Buddy.play("Normal_left")
+	if not walkL or climbing or falling or dragging:
 		walkL = false
+		return
+	Buddy.play("WalkLeft")
+	var timer = 0.0
+	var random = rng.randi_range(1, 4)
+	while timer < random :
+		if  get_window().position.x < left_wall :
+			Climbing()
+			walkL = false
+			climbLeft = true
+			break
+		if  dragging :
+			break
+		get_window().position.x -= WalkingSpeed
+		await get_tree().create_timer(0.016).timeout
+		timer += 0.016
+	Buddy.play("Normal_left")
+	walkL = false
 func Climb():
 	if climbing:
 		var timer = 0.0
@@ -123,13 +124,10 @@ func Climb():
 func Climbing():
 	var random = rng.randi_range(1, 4)
 	match random:
-		1:
-			climbing = true 
-			Climb()
-		2:
-			climbing = true 
-			Climb()
-		3:
+		1, 2:
+			climbing = true
+			await Climb()
+		3, 4:
 			climbing = false
 			climbLeft = false
 			climbRight = false

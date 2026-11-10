@@ -9,11 +9,14 @@ var random_time = rng.randf_range(25, 50)
 var D = preload("res://SpeachWindow.tscn")
 var P = preload("res://PopUp.tscn")
 var W = preload("res://WalkOut.tscn")
+var VW = preload("res://Roaming_voice.tscn")
 var speach: Window = D.instantiate()
 var PopUp: Window = P.instantiate()
 var Walk: Window = W.instantiate()
+var WalkingVoice: Window = VW.instantiate()
 var speak = false
 var lock = true
+var Tel = true
 var direction = 0
 var previuos = 0
 var previuos_direction = 0
@@ -80,8 +83,7 @@ func _ready() -> void:
 	
 
 func teleport() -> void:
-	if not dragging and not OutTheWindow:
-		UpdatePopUp()
+	if not dragging and not OutTheWindow and Tel:
 		var max_coordsX = DisplayServer.screen_get_size().x
 		var max_coordsY = DisplayServer.screen_get_size().y
 		var safe_max_x = max_coordsX - get_window().size.x #get_window.size is window size
@@ -90,12 +92,19 @@ func teleport() -> void:
 		var random_y = rng.randf_range(0, safe_max_y)
 		get_window().position = Vector2i(random_x, random_y)
 		random_time = rng.randf_range(25, 50)
+		UpdatePopUp()
 		if rng.randf() < 0.3:
 			speach.Teleport_Voice()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 var i = 0
 func _process(delta: float) -> void:
+	if Walk.dragging:
+		if Overlapping():
+			WalkIn()
+			speach.BackToWindow_Voice()
+	if Walk.walkL or Walk.climbing or Walk.falling or Walk.dragging :
+		UpdateWalkingVoice()
 	detect_shake()
 	if dragging:
 		UpdatePopUp()
@@ -128,8 +137,6 @@ func _input(event: InputEvent) -> void:
 		if Geometry2D.is_point_in_polygon(get_window().get_mouse_position(), calculated_polygon):
 			UpdatePopUp()
 			PopUp.visible = not PopUp.visible 
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_released() and OutTheWindow:
-		WalkIn()
 	
 	if event is InputEventKey and event.keycode == KEY_E and event.pressed and not OutTheWindow:
 		speach.Drag_Voice()
@@ -161,6 +168,13 @@ func UpdatePopUp() -> void:
 	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
 	PopUp.position.x = int(buddy_screen.x - speach.size.x / 1.75 )
 	PopUp.position.y = int(buddy_screen.y - speach.size.y )
+func UpdateWalkingVoice() -> void:
+	var buddy_WALK = Vector2(Walk.position) + Walk.Buddy.position
+	WalkingVoice.position = Vector2i(
+		int(buddy_WALK.x - WalkingVoice.size.x / 2),
+		int(buddy_WALK.y - WalkingVoice.size.y)
+	)
+
 
 func detect_shake() -> void :
 	if not OutTheWindow:
@@ -187,13 +201,26 @@ func detect_shake() -> void :
 		
 func Walk_Out():
 	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
+	var buddy_WALK = Vector2(get_window().position) + Vector2(WalkingVoice.position)
+	WalkingVoice.position.x = int(buddy_WALK.x )
+	WalkingVoice.position.y = int(buddy_WALK.y)
+	WalkingVoice.visible = false
+	WalkingVoice.transparent = true
+	WalkingVoice.transparent_bg = true
+	WalkingVoice.borderless = true
+	WalkingVoice.always_on_top = true
+	WalkingVoice.size = Vector2i(800, 200)
+	add_child(WalkingVoice)
 	Walk.position.x = buddy_screen.x
 	Walk.position.y = buddy_screen.y
 	Buddy.play("Empty")
 	OutTheWindow = true
 	PopUp.visible = false
 	add_child(Walk)
-
+func Overlapping():
+	var rectWindow = Rect2i(get_window().position , get_window().size)
+	var rectWalking = Rect2i(Walk.position , Walk.size)
+	return rectWindow.intersects(rectWalking)
 func ChanceToWalkOut():
 	var random_chance = rng.randi_range(1, 20)
 	if random_chance == 5:
@@ -202,3 +229,4 @@ func WalkIn():
 	Buddy.play("new_animation")
 	OutTheWindow = false
 	remove_child(Walk)
+	Walk.dragging = false
