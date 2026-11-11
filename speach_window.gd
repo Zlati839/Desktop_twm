@@ -1,8 +1,8 @@
 #Sounds
 #Refusing apps to open
-#Voicelines for roaming Twm
+#Add more dynamic face switches 
+#Add dynamic face switches for roaming twm too
 #Make roaming Twm be able to iteract with the empty window
-#Make settings voicelines <---
 extends Window
 var main: Node2D
 var font := load("res://Terminus-TTF-Bold-700.ttf")
@@ -22,13 +22,16 @@ var dizzy = false
 var exit = false
 var time_wait = 9
 # Called when the node enters the scene tree for the first time.
-var greeting_voice = ["Hello!" , "Greetings" , "How have you been ?",   ]
+var greeting_voice = ["Hello!" , "Greetings" , "How have you been ?"]
 var teleport_voice = ["Whats this ?", "Whats over here ?" , "I will just move a litle ", "How about over here ?" , "Surprise!" , "Just exploring!" ]
 var drag_voice = ["Release me !" , "Why are you moving me ?" , "What are you doing ?" , "You could have just asked"]
 var sometimes_voice = ["What are you working on ?" , "Do you think Niko remembers me  ?" , "Do programs also have motion sickness ?" , "I wounder if im able to ecape this window " ,"Can you see everything I do?" , "Sometimes I forget how small this window is.","What's the weather like outside?","Make sure to take a break every now and then.","Make sure you're getting enough sleep.", "It's nice having someone to talk to.", "I wonder if Niko is doing alright." , "Remember to stretch a little!" , "I hope I'm not distracting you."]
 var shake_voice = ["Why did you have to do this ?" , "Stop it !!!" , "Programs do have motion sickness !" , "I dont feel good " , "I dont like this !", "I think I'm going to be sick..."]
 var goodbye_voice = ["See you later !" , "Goodbye for now !" , "cya !" , "Dont get lonely without me !"]
 var returning_voice = ["You dont want me exploring your desktop ?" , "Awwww why " , " I wanted to explore more " , "Back to my window i guess " , "It was fun"]
+var Good_settings = ["I like the new settings !" , "New configurations !" ,"Nice !" , "Good choice"]
+var Netural_settings =["Why did you even go in setttigns " , "ehhhh" , "Settings..."]
+var Bad_settings = ["I dont like these settings " , "im not a big fan " , "i would rather not"]
 var sometimes_timer: Timer
 
 func _ready() -> void:
@@ -207,6 +210,18 @@ func Goodbye_Voice():
 func BackToWindow_Voice():
 	var d = rng.randf_range(0, returning_voice.size() - 1)
 	words = returning_voice[d]
+	printText(words)
+func SettingsGood_Voice():
+	var d = rng.randf_range(0, Good_settings.size() - 1)
+	words = Good_settings[d]
+	printText(words)
+func SettingsNetural_Voice():
+	var d = rng.randf_range(0, Netural_settings.size() - 1)
+	words = Netural_settings[d]
+	printText(words)
+func SettingsBad_Voice():
+	var d = rng.randf_range(0, Bad_settings.size() - 1)
+	words = Bad_settings[d]
 	printText(words)
 
 # Sprite Switch

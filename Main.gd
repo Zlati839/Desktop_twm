@@ -40,6 +40,7 @@ func _ready() -> void:
 	previuos = get_window().position.x
 	speach.main = self
 	PopUp.main = self
+	WalkingVoice.main = self
 	#======================2ND WINDOW============
 	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
 	speach.visible = false

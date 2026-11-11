@@ -1,10 +1,15 @@
 extends Window
 @onready var text: RichTextLabel = $TextureRect/RichTextLabel
 var walking_voice = ["I ESCAPED!!" , "Im out !" , "So much space" , "Im free " , "YAAAAAY !!" , "I will explore for a little "]
+var Sometimes_vocie =["So fun !!!" , "Look at me go!" , "Its good to streatch a little !" , "Just walking around" , "I can see your icons more clearly !" , "I can climb !" , "I cant get hurt from falling !!!","Finally, some room to move!" , "Maybe I should explore more often." ,"You're not going to leave me out here, right?","Hey! I can see my own window from here!" ]
+var Climbing_voice = ["Up we go !" , "Look what i can do !" , " Im a spider !!" , "Im really high !" ]
 var words = ""
+var D = preload("res://WalkOut.tscn")
+var Wlak = D.instantiate()
 var rng = RandomNumberGenerator.new()
 var font := load("res://Terminus-TTF-Bold-700.ttf")
 var speaking = false
+var main: Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,6 +18,11 @@ func _ready() -> void:
 	#=======================Window settings====================
 	set_flag(Window.FLAG_NO_FOCUS, true)
 	set_flag(Window.FLAG_MOUSE_PASSTHROUGH, true)
+	var sometimes_timer = Timer.new()
+	add_child(sometimes_timer)
+	sometimes_timer.wait_time = 8
+	sometimes_timer.start()
+	sometimes_timer.timeout.connect(Sometimes_Voice)
 
 
 func printText(texxt) -> void:
@@ -36,11 +46,21 @@ func Exiting_voice():
 	text.add_theme_font_override("normal_font", font)
 	text.add_theme_font_size_override("normal_font_size", 16)
 	printText(words)
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	if Input.is_key_pressed(KEY_0):
-		var d = rng.randf_range(0, walking_voice.size() - 1)
-		words = walking_voice[d]
-		text.add_theme_font_override("normal_font", font)
-		text.add_theme_font_size_override("normal_font_size", 16)
+func Sometimes_Voice():
+	var chance = rng.randi_range(0,3)
+	if main.OutTheWindow and chance == 2:
+		var d = rng.randi_range(0, Sometimes_vocie.size() - 1)
+		words = Sometimes_vocie[d]
 		printText(words)
+func Climbing_Voice():
+	if main.OutTheWindow and Wlak.climbing:
+		var chance  =  rng.randi_range(0, 4)
+		var d = rng.randi_range(0, Climbing_voice.size() - 1)
+		words = Climbing_voice[d]
+		printText(words)
+
+func _process(delta: float) -> void:
+	if not main.OutTheWindow:
+		visible = false
+	if Input.is_key_pressed(KEY_0):
+		Climbing_Voice()
