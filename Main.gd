@@ -25,6 +25,14 @@ var starting = false
 var OutTheWindow = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	WalkingVoice.visible = false
+	WalkingVoice.transparent = true
+	WalkingVoice.transparent_bg = true
+	WalkingVoice.borderless = true
+	WalkingVoice.always_on_top = true
+	Walk.main = self
+	Walk.WalkingVoice = WalkingVoice
+	WalkingVoice.Walk = Walk
 	#===================SETTINGS======================
 	get_viewport().transparent_bg = true
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_TRANSPARENT, true)
@@ -163,7 +171,8 @@ func Worried() -> void:
 	Buddy.play("Worried")
 func UpdateText() -> void:
 	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position
-	speach.position.x = int(buddy_screen.x - speach.size.x / 2 - 50)
+	var sum_shi = int(buddy_screen.x - speach.size.x / 2 - 50)
+	speach.position.x = roundi(speach.UpdateVoiceBoundarys(sum_shi))
 	speach.position.y = int(buddy_screen.y)
 func UpdatePopUp() -> void:
 	var buddy_screen = Vector2(get_window().position) + Buddy.global_position + Buddy.global_position 
@@ -171,10 +180,12 @@ func UpdatePopUp() -> void:
 	PopUp.position.y = int(buddy_screen.y - speach.size.y )
 func UpdateWalkingVoice() -> void:
 	var buddy_WALK = Vector2(Walk.position) + Walk.Buddy.position
-	WalkingVoice.position = Vector2i(
-		int(buddy_WALK.x - WalkingVoice.size.x / 2),
-		int(buddy_WALK.y - WalkingVoice.size.y)
-	)
+	var screen = DisplayServer.screen_get_usable_rect()
+	var min_x = screen.position.x
+	var max_x = screen.end.x - WalkingVoice.size.x
+	var target_x = buddy_WALK.x - WalkingVoice.size.x / 2
+	var target_y = buddy_WALK.y - WalkingVoice.size.y
+	WalkingVoice.position = Vector2i(roundi(clampf(target_x, min_x, max_x)),roundi(target_y))
 
 
 func detect_shake() -> void :
@@ -205,11 +216,6 @@ func Walk_Out():
 	var buddy_WALK = Vector2(get_window().position) + Vector2(WalkingVoice.position)
 	WalkingVoice.position.x = int(buddy_WALK.x )
 	WalkingVoice.position.y = int(buddy_WALK.y)
-	WalkingVoice.visible = false
-	WalkingVoice.transparent = true
-	WalkingVoice.transparent_bg = true
-	WalkingVoice.borderless = true
-	WalkingVoice.always_on_top = true
 	WalkingVoice.size = Vector2i(800, 200)
 	add_child(WalkingVoice)
 	Walk.position.x = buddy_screen.x

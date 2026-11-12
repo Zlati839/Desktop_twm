@@ -1,8 +1,8 @@
 #Sounds
 #Refusing apps to open
 #Add more dynamic face switches 
-#Add dynamic face switches for roaming twm too
 #Make roaming Twm be able to iteract with the empty window
+# Also make a safe guard for the textbox so they dont appear out of screen
 extends Window
 var main: Node2D
 var font := load("res://Terminus-TTF-Bold-700.ttf")
@@ -179,7 +179,11 @@ func printText(texxt) -> void:
 	dizzy = false
 	ReturnToOneShot()
 
-
+func UpdateVoiceBoundarys(target_x: float) -> int:
+	var screen = DisplayServer.screen_get_usable_rect()
+	var min_x = screen.position.x
+	var max_x = screen.end.x - get_window().size.x
+	return  roundi(clampf(target_x, min_x, max_x))
 # ALL THE VOICES !!!!!!!!!!!!
 func Teleport_Voice():
 		var d = rng.randf_range(0, teleport_voice.size() - 1)

@@ -1,4 +1,6 @@
 extends Window
+var main: Node2D
+var WalkingVoice: Window
 @onready var Buddy = $Test1
 @onready var Buddy_Boddy = $Test1/Polygon2D
 var gravity = 6
@@ -56,7 +58,16 @@ func _process(delta: float) -> void:
 		world_space.append(stuffmore)
 	calculated_polygon = world_space
 	get_window().mouse_passthrough_polygon = world_space
-
+func CheckForDraggingPlace():
+	var window = get_window()
+	var target_y = usable_rect.position.y  - window.size.y + usable_rect.size.y
+	if get_window().position.x > right_wall + 20 :
+		get_window().position.x - 100
+	if  get_window().position.x < left_wall - 20 :
+		get_window().position.x = left_wall + 100
+	if  get_window().position.y > target_y + 20:
+		get_window().position.y = target_y - 100
+	
 func Walk():
 	if not walkL:
 		walkL = true
@@ -139,4 +150,5 @@ func _input(event: InputEvent) -> void:
 			DisplayServer.window_start_drag(get_window_id())
 	else:
 			dragging = false
+			CheckForDraggingPlace()
 	
