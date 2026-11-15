@@ -90,7 +90,7 @@ func _ready() -> void:
 	Out_chance.start()
 	
 	
-
+	
 func teleport() -> void:
 	if not dragging and not OutTheWindow and Tel:
 		var max_coordsX = DisplayServer.screen_get_size().x
@@ -230,7 +230,7 @@ func Overlapping():
 	return rectWindow.intersects(rectWalking)
 func ChanceToWalkOut():
 	var random_chance = rng.randi_range(1, 20)
-	if random_chance == 5:
+	if random_chance == 5 and not speach.speaking:
 		Walk_Out()
 func WalkIn():
 	Buddy.play("new_animation")

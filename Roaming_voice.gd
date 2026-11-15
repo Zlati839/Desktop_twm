@@ -3,8 +3,10 @@ extends Window
 @onready var sprite: TextureRect = $TextureRect/TextureRect
 
 var walking_voice = ["I ESCAPED!!" , "Im out !" , "So much space" , "Im free " , "YAAAAAY !!" , "I will explore for a little "]
-var Sometimes_vocie =["So fun !!!" , "Look at me go!" , "Its good to streatch a little !" , "Just walking around" , "I can see your icons more clearly !" , "I can climb !" , "I cant get hurt from falling !!!","Finally, some room to move!" , "Maybe I should explore more often." ,"You're not going to leave me out here, right?","Hey! I can see my own window from here!" ]
+var Sometimes_vocie =["So fun !!!" , "Look at me go!" , "Its good to streatch a little !" , "Just walking around" , "I can see your icons more clearly !" , "I can climb !" , "I cant get hurt from falling !!!","Finally, some room to move!" , "Maybe I should explore more often." ,"You're not going to leave me out here, right?","Hey! I can see my own window from here!" , "I wish Niko could see this" ]
 var Climbing_voice = ["Up we go !" , "Look what i can do !" , " Im a spider !!" , "Im really high !" ]
+var InteractiongWindow_voice = ["Do you like my screen ?" , "The screen is empty !" , "Its really small in there " , "Its blocking my path "]
+var MovingWindow_voice = ["Get out of my way !" , "Look how strong i am" , "I will just move this a little" , "Its blocking my path "]
 var words = ""
 var rng = RandomNumberGenerator.new()
 var font := load("res://Terminus-TTF-Bold-700.ttf")
@@ -34,7 +36,7 @@ func _ready() -> void:
 func printText(texxt) -> void:
 	if speaking:
 		return
-	switch_faceRandom()
+	switch_faceDynamic(texxt)
 	speaking = true
 	visible = true
 	text.text = ""
@@ -67,7 +69,16 @@ func Climbing_Voice():
 			var d = rng.randi_range(0, Climbing_voice.size() - 1)
 			words = Climbing_voice[d]
 			printText(words)
-
+func Window_Voice():
+	if main.OutTheWindow :
+		var d = rng.randi_range(0, InteractiongWindow_voice.size() - 1)
+		words = InteractiongWindow_voice[d]
+		printText(words)
+func Moving_Voice():
+	if main.OutTheWindow :
+		var d = rng.randi_range(0, MovingWindow_voice.size() - 1)
+		words = MovingWindow_voice[d]
+		printText(words)
 func switch_faceTalking() -> void :
 	sprite.texture = load("res://Talking_Twm.png")
 func switch_faceNormal() -> void :
@@ -76,7 +87,10 @@ func switch_faceHappier() -> void :
 	sprite.texture = load("res://Happier_twm.png")
 func switch_faceHappy() -> void :
 	sprite.texture = load("res://Happy_Twm.png")
-
+func switch_faceGuilty() -> void :
+	sprite.texture = load("res://Guilty_twm.png")
+func switch_faceWorried() -> void :
+	sprite.texture = load("res://Worried_twm.png")
 func switch_faceRandom() -> void :
 	var Chance = 1
 	if not Walk.climbing:
@@ -88,7 +102,21 @@ func switch_faceRandom() -> void :
 			switch_faceHappy()
 		3:
 			switch_faceHappier()
-
+func switch_faceDynamic(text) -> void:
+	if text =="I ESCAPED!!":
+		switch_faceHappy()
+	elif text =="YAAAAAY !!":
+		switch_faceHappy()
+	elif text == "I will explore for a little ":
+		switch_faceHappier()
+	elif text == "I can see your icons more clearly !":
+		switch_faceHappier()
+	elif text == "You're not going to leave me out here, right?":
+		switch_faceGuilty()
+	elif text == "I wish Niko could see this":
+		switch_faceGuilty()
+	else:
+		switch_faceRandom()
 func _process(delta: float) -> void:
 	if not main.OutTheWindow :
 		visible = false

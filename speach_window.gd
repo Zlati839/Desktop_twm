@@ -1,13 +1,10 @@
-#Sounds
-#Refusing apps to open
-#Add more dynamic face switches 
-#Make roaming Twm be able to iteract with the empty window
-# Also make a safe guard for the textbox so they dont appear out of screen
+#Sounds 
 extends Window
 var main: Node2D
 var font := load("res://Terminus-TTF-Bold-700.ttf")
 @onready var text: RichTextLabel = $TextureRect/RichTextLabel
 @onready var sprite: TextureRect = $TextureRect/TextureRect
+@onready var Audio: AudioStreamPlayer = $AudioStreamPlayer
 #A bunch of vars
 var rng = RandomNumberGenerator.new()
 var words = ""
@@ -35,6 +32,7 @@ var Bad_settings = ["I dont like these settings " , "im not a big fan " , "i wou
 var sometimes_timer: Timer
 
 func _ready() -> void:
+	Audio.volume_db = -20.0
 	get_viewport().transparent_bg = true
 	RenderingServer.set_default_clear_color(Color(0, 0, 0, 0))
 	UpdateActiveApps()
@@ -125,6 +123,7 @@ func _ready() -> void:
 	elif username.to_lower() in ["niko"]:
 		greeting_voice.append("There is only one person i know with that name , and its not you ")
 	else:
+		greeting_voice.append(username + "!!!!!!!!")
 		greeting_voice.append("Hello " + username + "!")
 		d = rng.randf_range(0, greeting_voice.size() - 1)
 		goodbye_voice.append("Dont forget me " + username)
@@ -165,6 +164,7 @@ func printText(texxt) -> void:
 	var txt = str(texxt)
 	for i in txt:
 		text.text += i
+		Audio.play()
 		await get_tree().create_timer(0.06).timeout
 	if not dizzy:
 		main.Normal()
@@ -303,9 +303,27 @@ func dynamic_faceSwitch(text) ->void:
 	elif text =="Nice ! An organised desktop":
 		switch_faceHappy()
 		main.Happy()
-	elif text == "Dont forget me" + username:
+	elif text == " I wanted to explore more ":
+		switch_faceSad()
+		main.Sad()
+	elif text == "Back to my window i guess ":
 		switch_faceGuilty()
 		main.Guilty()
+	elif text ==  "You dont want me exploring your desktop ?":
+		switch_faceGuilty()
+		main.Guilty()
+	elif text ==  "ehhhh":
+		switch_faceWorried()
+		main.Worried()
+	elif text ==  "i would rather not":
+		switch_faceWorried()
+		main.Worried()
+	elif text ==  "I dont like these settings ":
+		switch_faceShocked()
+		main.Shocked()
+	elif text == "Dont forget me" + username:
+		switch_faceSad()
+		main.Sad()
 	else:
 		switch_faceRandom()
 

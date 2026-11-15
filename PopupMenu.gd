@@ -56,7 +56,7 @@ func _on_button_3_button_down() -> void:
 	if not main.speach.speaking:
 		main.Walk_Out()
 		main.WalkingVoice.Exiting_voice()
-
+		main.Walk.JustStarted = true
 
 
 func _on_button_4_button_down() -> void:
@@ -86,7 +86,6 @@ func _on_button_4_button_down() -> void:
 	pressedMore = false
 	pressedNetural = false
 	pressedLess = false
-	print(str(quality))
 
 
 func _on_button_5_button_down() -> void:

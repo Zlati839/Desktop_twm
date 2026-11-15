@@ -101,7 +101,7 @@ size = Vector2i(99, 125)
 script = ExtResource("1_rm1gk")
 
 [node name="Test1" type="AnimatedSprite2D" parent="."]
-position = Vector2(54, 64)
+position = Vector2(55, 65)
 scale = Vector2(2.375, 2.12447)
 sprite_frames = SubResource("SpriteFrames_mbi4m")
 animation = &"Normal_left"
